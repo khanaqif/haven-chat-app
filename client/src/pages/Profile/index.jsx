@@ -234,6 +234,7 @@ const Profile = () => {
                 </div>
               )}
             </Avatar>
+
             {hovered && (
               <div
                 className="absolute inset-0 flex items-center justify-center bg-black/50 ring-fuchsia-50 rounded-full"

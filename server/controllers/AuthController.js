@@ -52,16 +52,30 @@ export const signup = async (req, res, next) => {
 
 export const login = async (req, res, next) => {
   try {
+    // debug
+    console.log("Request Body:", req.body); // Debugging
     const { email, password } = req.body;
+
+    console.log("Login attempt with:", email, password); // debugging
     if (email && password) {
       const user = await User.findOne({ email });
       if (!user) {
         return res.status(404).send("User not found");
       }
+      // debugging
+
+      console.log("Stored Password in DB:", user.password);
+      // const auth = await bcrypt.compare(password, user.password);
+
+      // debugging
       const auth = await compare(password, user.password);
+      console.log("Password match:", auth);
       if (!auth) {
         return res.status(400).send("Invalid Password");
       }
+
+      // debugging
+      console.log("JWT_KEY:", process.env.JWT_KEY);
       res.cookie("jwt", createToken(email, user.id), {
         maxAge,
         secure: true,
@@ -81,6 +95,8 @@ export const login = async (req, res, next) => {
       return res.status(400).send("Email and Password Required");
     }
   } catch (err) {
+    // debugging
+    console.error("Login Error:", err); // Print full error
     return res.status(500).send("Internal Server Error");
   }
 };
@@ -258,6 +274,19 @@ export const removeProfileImage = async (req, res, next) => {
     return res
       .status(200)
       .json({ message: "Profile image removed successfully." });
+  } catch (error) {
+    console.log({ error });
+    return res.status(500).send("Internal Server Error.");
+  }
+};
+
+// ********** logout *********
+
+export const logout = async (req, res, next) => {
+  try {
+    res.cookie("jwt", "", { maxAge: 1, secure: true, sameSite: "None" });
+
+    return res.status(200).send("Logout successfull.");
   } catch (error) {
     console.log({ error });
     return res.status(500).send("Internal Server Error.");

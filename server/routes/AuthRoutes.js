@@ -3,6 +3,7 @@ import {
   getUserInfo,
   signup,
   login,
+  logout,
   updateProfile,
   addProfileImage,
   removeProfileImage,
@@ -30,4 +31,7 @@ authRoutes.post(
 );
 
 authRoutes.delete("/remove-profile-image", verifyToken, removeProfileImage);
+
+authRoutes.post("/logout", logout);
+
 export default authRoutes;

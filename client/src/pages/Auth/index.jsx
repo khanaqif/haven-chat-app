@@ -89,6 +89,8 @@ const Auth = () => {
           { email, password },
           { withCredentials: true }
         );
+
+        console.log(response.data);
         if (response.data.user.id) {
           setUserInfo(response.data.user); // zustand
           if (response.data.user.profileSetup) navigate("/chat");
