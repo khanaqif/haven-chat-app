@@ -1,7 +1,30 @@
 import havenLogo from "@/assets/havenLogo.png";
 import ProfileInfo from "./components/profile-info";
+import NewDm from "./components/new-dm";
+import { useEffect } from "react";
+import { GET_CONTACTS_WITH_MESSAGES_ROUTE } from "../../../../utils/constants";
+import { useAppStore } from "../../../../store";
+import ContactList from "../../../../components/contact-list";
+import { apiClient } from "../../../../lib/api-client";
 
 const ContactsContainer = () => {
+  /* dm contacts list */
+
+  const { setDirectMessagesContacts, directMessagesContacts } = useAppStore();
+
+  useEffect(() => {
+    const getContacts = async () => {
+      const response = await apiClient.get(GET_CONTACTS_WITH_MESSAGES_ROUTE, {
+        withCredentials: true,
+      });
+
+      if (response.data.contacts) {
+        setDirectMessagesContacts(response.data.contacts);
+      }
+    };
+
+    getContacts();
+  }, [setDirectMessagesContacts]);
   return (
     <div
       className="relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw]
@@ -14,7 +37,14 @@ const ContactsContainer = () => {
       <div className="my-5">
         <div className="flex items-center justify-between pr-10">
           <Title text="Direct Messages" />
+          <NewDm />
         </div>
+        {/* dm contact list */}
+        <div className="max-h-[38vh] overflow-y-auto scrollbar-hidden">
+          <ContactList contacts={directMessagesContacts} />
+        </div>
+
+        {/*  */}
       </div>
 
       <div className="my-5">

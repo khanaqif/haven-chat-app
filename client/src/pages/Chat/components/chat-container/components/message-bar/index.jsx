@@ -4,11 +4,15 @@ import EmojiPicker from "emoji-picker-react";
 
 import { RiEmojiStickerLine } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
-
+import { useAppStore } from "../../../../../../store";
+import { useSocket } from "../../../../../../context/SocketContext";
+import { MESSAGE_TYPES } from "../../../../../../utils/constants";
 const MessageBar = () => {
   const [message, setMessage] = useState("");
+  const { selectedChatType, selectedChatData, userInfo } = useAppStore();
   const emojiRef = useRef();
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const socket = useSocket();
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -25,7 +29,34 @@ const MessageBar = () => {
   const handleAddEmoji = (emoji) => {
     setMessage((msg) => msg + emoji.emoji);
   };
-  const handleSendMessage = async () => {};
+
+  /* debugging */
+  /* 
+  console.log("Socket instance:", socket); */
+
+  const handleSendMessage = async () => {
+    if (selectedChatType === "contact") {
+      socket.emit("sendMessage", {
+        sender: userInfo.id,
+        content: message,
+        recipient: selectedChatData._id,
+        messageType: MESSAGE_TYPES.TEXT,
+        audioUrl: undefined,
+        fileUrl: undefined,
+      });
+    } else if (selectedChatType === "channel") {
+      socket.emit("send-channel-message", {
+        sender: userInfo.id,
+        content: message,
+        messageType: MESSAGE_TYPES.TEXT,
+        audioUrl: undefined,
+        fileUrl: undefined,
+        channelId: selectedChatData._id,
+      });
+    }
+    setMessage("");
+  };
+
   return (
     <div className="h-[10vh] bg-[#1c1d25] flex justify-center items-center px-8 mb-8 gap-6">
       <div className="flex-1 flex bg-[#2a2b33] rounded-md items-center gap-5 pr-5">
@@ -67,7 +98,8 @@ const MessageBar = () => {
       <button
         className="bg-[#8417ff] rounded-md flex items-center justify-center p-5
                   focus:border-none  hover:bg-[#741bda] focus:bg-[#741bda] focus:outline-none 
-                  focus:text-white duration-300 transition-all">
+                  focus:text-white duration-300 transition-all"
+        onClick={handleSendMessage}>
         <IoSend className="text-2xl" />
       </button>
     </div>

@@ -4,16 +4,15 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import authRoutes from "./routes/AuthRoutes.js";
+import contactsRoutes from "./routes/ContactRoutes.js";
+import messagesRoutes from "./routes/MessagesRoute.js";
+import setupSocket from "./socket.js";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3001;
 const databaseURL = process.env.DATABASE_URL;
-
-// Use middleware
-app.use(express.json()); // Parse JSON requests
-app.use(cookieParser()); // Parse cookies
 
 app.use(
   cors({
@@ -23,20 +22,28 @@ app.use(
   })
 );
 
-// upload
-
 app.use("/uploads/profiles", express.static("uploads/profiles"));
 app.use("/uploads/files", express.static("uploads/files"));
 
-app.use("/api/auth", authRoutes);
+app.use(cookieParser());
+app.use(express.json());
 
-// Connect to MongoDB
-mongoose
-  .connect(databaseURL)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log("MongoDB connection error:", err));
+app.use("/api/auth", authRoutes);
+app.use("/api/contacts", contactsRoutes);
+app.use("/api/messages", messagesRoutes);
 
 // Start the server
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });
+
+setupSocket(server);
+
+mongoose
+  .connect(databaseURL)
+  .then(() => {
+    console.log("DB Connetion Successfull");
+  })
+  .catch((err) => {
+    console.log(err.message);
+  });
