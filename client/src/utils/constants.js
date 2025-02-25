@@ -1,4 +1,4 @@
-export const HOST = import.meta.env.VITE_SERVER_URL; //"http://localhost:8747";
+export const HOST = import.meta.env.VITE_SERVER_URL;
 export const SOCKET_HOST = import.meta.env.VITE_SERVER_URL;
 export const AUTH_ROUTES = "/api/auth";
 
@@ -12,12 +12,6 @@ export const LOGOUT_ROUTE = `${AUTH_ROUTES}/logout`;
 
 export const CONTACTS_ROUTES = "/api/contacts";
 export const SEARCH_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/search`;
-/* dm list */
-/* 
-export const GET_CONTACTS_ROUTE = `${CONTACTS_ROUTES}/get-contacts-for-dm`;
- */
-
-/* copy */
 
 export const GET_CONTACTS_WITH_MESSAGES_ROUTE = `${CONTACTS_ROUTES}/get-contacts-for-list`;
 export const GET_ALL_CONTACTS = `${CONTACTS_ROUTES}/all-contacts`;
@@ -28,3 +22,9 @@ export const MESSAGE_TYPES = {
   TEXT: "text",
   FILE: "file",
 };
+export const UPLOAD_FILE = `${MESSAGES_ROUTES}/upload-file`;
+
+export const CHANNEL_ROUTES = "/api/channel";
+export const CREATE_CHANNEL = `${CHANNEL_ROUTES}/create-channel`;
+export const GET_USER_CHANNELS = `${CHANNEL_ROUTES}/get-user-channels`;
+export const GET_CHANNEL_MESSAGES = `${CHANNEL_ROUTES}/get-channel-messages`;

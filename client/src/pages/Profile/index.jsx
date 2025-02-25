@@ -24,7 +24,7 @@ const Profile = () => {
   const [lastName, setLastName] = useState("");
   const [image, setImage] = useState(null);
   const [hovered, setHovered] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(0); //not sure
+  const [selectedColor, setSelectedColor] = useState(0);
 
   const fileInputRef = useRef(null);
 
@@ -33,12 +33,11 @@ const Profile = () => {
       setFirstName(userInfo.firstName);
       setLastName(userInfo.lastName);
       setSelectedColor(userInfo.color);
-    } /* set image */
+    }
     if (userInfo.image) {
       setImage(`${HOST}/${userInfo.image}`);
     }
   }, [userInfo]);
-  // Validate profile
 
   const validateProfile = () => {
     if (!firstName) {
@@ -51,8 +50,6 @@ const Profile = () => {
     }
     return true;
   };
-
-  // save changes
 
   const saveChanges = async () => {
     if (validateProfile()) {
@@ -86,67 +83,8 @@ const Profile = () => {
   };
 
   const handleFileInputClick = () => {
-    //if(userInfo.profileSetup){
     fileInputRef.current.click();
   };
-
-  /* 
-  const handleImageChange = async (event) => {
-    const file = event.target.files[0];
-    console.log(file);
-    if (file) {
-      const formData = new FormData();
-      formData.append("profile-image", file);
-
-      // ****** not sure
-
-      try {
-        const response = await apiClient.post(
-          ADD_PROFILE_IMAGE_ROUTE,
-          formData,
-          {
-            withCredentials: true,
-          }
-        );
-
-        if (response.status === 200 && response.data.image) {
-          setUserInfo({ ...userInfo, image: response.data.image });
-          setImage(`${HOST}/${response.data.image}`);
-          toast.success("Image updated successfully.");
-        }
-      } catch (error) {
-        console.error(error);
-        toast.error("Failed to update image.");
-      }
-      // ----------------
-
-      const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, {
-        withCredentials: true,
-      });
-
-      if (response.status === 200 && response.data.image) {
-        setUserInfo({ ...userInfo, image: response.data.image });
-        toast.success("Image updated successfully.");
-      }
-
-      // EXPREIMENTAL
-      /*  const reader = new FileReader();
-      reader.onload = () => {
-        console.log(reader.result);
-        setImage(URL.createObjectURL(file)); // this
-        // setImage(reader.result); // or this
-      };
-      reader.readAsDataURL(file); */
-
-  /* experimental */
-
-  /*
-    }
-  }; 
-
-*/
-
-  // **************** copied
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
@@ -165,23 +103,6 @@ const Profile = () => {
       reader.readAsDataURL(file);
     }
   };
-
-  // delte image
-
-  /* const handleDeleteImage = async () => {
-    try {
-      const response = await apiClient.delete(REMOVE_PROFILE_IMAGE_ROUTE, {
-        withCredentials: true,
-      });
-      if (response.status === 200) {
-        setUserInfo({ ...userInfo, image: null });
-        setImage(null);
-        toast.success("Image removed successfully.");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }; */
 
   const handleDeleteImage = async () => {
     try {
@@ -256,9 +177,8 @@ const Profile = () => {
               accept=".png,.jpg,.jpeg,.svg,.webp"
             />
           </div>
-          {/*  input box : email , first name , last name , colors */}
+
           <div className="flex min-w-32 md:min-w-64 flex-col gap-5 text-white items-center justify-center">
-            {/* email  */}
             <div className="w-full">
               <Input
                 placeholder="Email"
@@ -268,9 +188,6 @@ const Profile = () => {
                 className="rounded-lg p-6 bg-[#2c2e3b] border-none"
               />
             </div>
-            {/*  */}
-
-            {/* first name  */}
 
             <div className="w-full">
               <Input
@@ -282,8 +199,6 @@ const Profile = () => {
               />
             </div>
 
-            {/* last name */}
-
             <div className="w-full">
               <Input
                 placeholder="Last Name"
@@ -293,8 +208,6 @@ const Profile = () => {
                 className="rounded-lg p-6 bg-[#2c2e3b] border-none"
               />
             </div>
-
-            {/* colors */}
 
             <div className="w-full flex gap-5">
               {colors.map((color, index) => (
@@ -309,11 +222,8 @@ const Profile = () => {
               ))}
             </div>
           </div>
-          {/* colors end  */}
         </div>
-        {/* input box end */}
 
-        {/* button */}
         <div className="w-full">
           <Button
             className="h-16 w-full bg-purple-700 hover:bg-purple-900 transition-all duration-300"
@@ -321,8 +231,6 @@ const Profile = () => {
             Save Changes
           </Button>
         </div>
-
-        {/* button end */}
       </div>
     </div>
   );

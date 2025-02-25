@@ -10,7 +10,7 @@ export const getAllContacts = async (request, response, next) => {
     );
 
     const contacts = users.map((user) => ({
-      label: `${user.firstName} ${user.lastName}`,
+      label: user.firstName ? `${user.firstName} ${user.lastName}` : user.email,
       value: user._id,
     }));
 
@@ -51,8 +51,6 @@ export const searchContacts = async (request, response, next) => {
   }
 };
 
-/* ************* DM List **************** */
-
 export const getContactsForList = async (req, res, next) => {
   try {
     let { userId } = req;
@@ -61,13 +59,6 @@ export const getContactsForList = async (req, res, next) => {
     if (!userId) {
       return res.status(400).send("User ID is required.");
     }
-
-    // Convert to ObjectId only if it's a valid string
-    /* if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).send("Invalid User ID.");
-    } */
-
-    /*  userId = new mongoose.Types.ObjectId(userId); */
 
     const contacts = await Message.aggregate([
       {

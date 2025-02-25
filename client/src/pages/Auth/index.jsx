@@ -14,13 +14,12 @@ import { useAppStore } from "../../store";
 const Auth = () => {
   const navigate = useNavigate();
 
-  const { setUserInfo } = useAppStore(); // zustand
+  const { setUserInfo } = useAppStore();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  // Signup validation
   const validateSignup = () => {
     if (!email.length) {
       toast.error("Email is required");
@@ -40,8 +39,6 @@ const Auth = () => {
     return true;
   };
 
-  // login validation
-
   const validateLogin = () => {
     if (!email.length) {
       toast.error("Email is required");
@@ -56,10 +53,6 @@ const Auth = () => {
     return true;
   };
 
-  // Handle signup
-
-  // **** copied
-
   const handleSignup = async () => {
     try {
       if (validateSignup()) {
@@ -72,7 +65,7 @@ const Auth = () => {
           { withCredentials: true }
         );
         if (response.status === 201) {
-          setUserInfo(response.data.user); // zustand
+          setUserInfo(response.data.user);
           navigate("/profile");
         }
       }
@@ -92,7 +85,7 @@ const Auth = () => {
 
         console.log(response.data);
         if (response.data.user.id) {
-          setUserInfo(response.data.user); // zustand
+          setUserInfo(response.data.user);
           if (response.data.user.profileSetup) navigate("/chat");
           else navigate("/profile");
         } else {
@@ -185,7 +178,7 @@ const Auth = () => {
             </TabsContent>
           </Tabs>
         </div>
-        {/* backgroundImage */}
+
         <div className=""></div>
       </div>
     </div>

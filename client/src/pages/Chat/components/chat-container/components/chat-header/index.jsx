@@ -15,7 +15,6 @@ const ChatHeader = () => {
         <div
           className="flex gap-3 items-center 
         justify-center">
-          {/* avatar */}
           <div className="w-12 h-12 relative flex items-center justify-center">
             {selectedChatType === "contact" ? (
               <Avatar className="w-12 h-12 rounded-full overflow-hidden">
@@ -52,8 +51,6 @@ const ChatHeader = () => {
               : ""}
           </div>
         </div>
-
-        {/*  */}
       </div>
 
       <div
@@ -68,7 +65,6 @@ const ChatHeader = () => {
         </button>
       </div>
     </div>
-    /*  </div> */
   );
 };
 

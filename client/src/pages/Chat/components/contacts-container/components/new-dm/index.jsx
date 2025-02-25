@@ -90,12 +90,6 @@ const NewDm = () => {
             />
           </div>
 
-          {/* only show scroll area if contacts length>0 */}
-
-     
-
-          {/* scroll area */}
-
           <ScrollArea className="h-[250px]">
             <div className="flex flex-col gap-5">
               {searchedContacts.map((contact) => (
@@ -105,8 +99,6 @@ const NewDm = () => {
                   onClick={() => {
                     selectNewContact(contact);
                   }}>
-                  {/* avatar */}
-
                   <div className="w-12 h-12 relative">
                     <Avatar className="w-12 h-12 rounded-full overflow-hidden">
                       {contact.image ? (
@@ -138,12 +130,6 @@ const NewDm = () => {
                   </div>
                 </div>
               ))}
-
-              {/* if searched contacts are not there */}
-
-
-
-
 
               {searchedContacts.length <= 0 && (
                 <div className="flex-1  md:flex mt-5  flex-col justify-center items-center  duration-1000 transition-all">

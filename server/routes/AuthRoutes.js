@@ -10,7 +10,6 @@ import {
 } from "../controllers/AuthController.js";
 import { verifyToken } from "../middlewares/AuthMiddleware.js";
 
-// multer for upload
 import multer from "multer";
 
 const authRoutes = Router();
@@ -22,7 +21,6 @@ authRoutes.post("/login", login);
 authRoutes.get("/user-info", verifyToken, getUserInfo);
 authRoutes.post("/update-profile", verifyToken, updateProfile);
 
-// add profile image
 authRoutes.post(
   "/add-profile-image",
   verifyToken,

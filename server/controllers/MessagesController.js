@@ -1,5 +1,5 @@
-import Message from "../models/MessagesModal.js"; //server\models\MessagesModal.js
-/* import { mkdirSync, renameSync } from "fs"; */
+import Message from "../models/MessagesModal.js";
+import { mkdirSync, renameSync } from "fs";
 
 export const getMessages = async (req, res, next) => {
   try {
@@ -22,7 +22,7 @@ export const getMessages = async (req, res, next) => {
     return res.status(500).send("Internal Server Error");
   }
 };
-/* 
+
 export const uploadFile = async (request, response, next) => {
   try {
     if (request.file) {
@@ -31,7 +31,6 @@ export const uploadFile = async (request, response, next) => {
       let fileDir = `uploads/files/${date}`;
       let fileName = `${fileDir}/${request.file.originalname}`;
 
-      // Create directory if it doesn't exist
       mkdirSync(fileDir, { recursive: true });
 
       renameSync(request.file.path, fileName);
@@ -44,4 +43,3 @@ export const uploadFile = async (request, response, next) => {
     return response.status(500).send("Internal Server Error.");
   }
 };
- */

@@ -6,11 +6,23 @@ import { RiEmojiStickerLine } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
 import { useAppStore } from "../../../../../../store";
 import { useSocket } from "../../../../../../context/SocketContext";
-import { MESSAGE_TYPES } from "../../../../../../utils/constants";
+import { MESSAGE_TYPES, UPLOAD_FILE } from "../../../../../../utils/constants";
+import { apiClient } from "../../../../../../lib/api-client";
+
 const MessageBar = () => {
-  const [message, setMessage] = useState("");
-  const { selectedChatType, selectedChatData, userInfo } = useAppStore();
   const emojiRef = useRef();
+  const fileInputRef = useRef();
+
+  const {
+    selectedChatType,
+    selectedChatData,
+    userInfo,
+    setIsUploading,
+    setFileUploadProgress,
+  } = useAppStore();
+
+  const [message, setMessage] = useState("");
+
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const socket = useSocket();
 
@@ -30,9 +42,9 @@ const MessageBar = () => {
     setMessage((msg) => msg + emoji.emoji);
   };
 
-  /* debugging */
-  /* 
-  console.log("Socket instance:", socket); */
+  const handleMessageChange = (event) => {
+    setMessage(event.target.value);
+  };
 
   const handleSendMessage = async () => {
     if (selectedChatType === "contact") {
@@ -57,8 +69,58 @@ const MessageBar = () => {
     setMessage("");
   };
 
+  const handleAttachmentClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleAttachmentChange = async (event) => {
+    try {
+      const file = event.target.files[0];
+
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        setIsUploading(true);
+        const response = await apiClient.post(UPLOAD_FILE, formData, {
+          withCredentials: true,
+          onUploadProgress: (data) => {
+            setFileUploadProgress(Math.round((100 * data.loaded) / data.total));
+          },
+        });
+
+        if (response.status === 200 && response.data) {
+          setIsUploading(false);
+          if (selectedChatType === "contact") {
+            socket.emit("sendMessage", {
+              sender: userInfo.id,
+              content: undefined,
+              recipient: selectedChatData._id,
+              messageType: MESSAGE_TYPES.FILE,
+              audioUrl: undefined,
+              fileUrl: response.data.filePath,
+            });
+          } else if (selectedChatType === "channel") {
+            socket.emit("send-channel-message", {
+              sender: userInfo.id,
+              content: undefined,
+              messageType: MESSAGE_TYPES.FILE,
+              audioUrl: undefined,
+              fileUrl: response.data.filePath,
+              channelId: selectedChatData._id,
+            });
+          }
+        }
+      }
+    } catch (error) {
+      setIsUploading(false);
+      console.log({ error });
+    }
+  };
+
   return (
-    <div className="h-[10vh] bg-[#1c1d25] flex justify-center items-center px-8 mb-8 gap-6">
+    <div className="h-[10vh] bg-[#1c1d25] flex justify-center items-center px-8 mb-8 gap-6 ">
       <div className="flex-1 flex bg-[#2a2b33] rounded-md items-center gap-5 pr-5">
         <input
           type="text"
@@ -66,15 +128,23 @@ const MessageBar = () => {
         rounded-md focus:border-none focus:outline-none"
           placeholder="Enter Message"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={handleMessageChange}
         />
 
         <button
           className="text-neutral-500 
                   focus:border-none focus:outline-none 
-                  focus:text-white duration-300 transition-all">
+                  focus:text-white duration-300 transition-all"
+          onClick={handleAttachmentClick}>
           <GrAttachment className="text-2xl" />
         </button>
+
+        <input
+          type="file"
+          className="hidden"
+          ref={fileInputRef}
+          onChange={handleAttachmentChange}
+        />
 
         <div className="relative">
           <button

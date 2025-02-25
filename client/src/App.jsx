@@ -9,7 +9,6 @@ import { useAppStore } from "@/store";
 import { GET_USER_INFO } from "./utils/constants";
 import { apiClient } from "./lib/api-client";
 
-// zustand
 const PrivateRoute = ({ children }) => {
   const { userInfo } = useAppStore();
   const isAuthenticated = !!userInfo;
@@ -29,34 +28,6 @@ const App = () => {
 
   useEffect(() => {
     const getUserData = async () => {
-      /*  try {
-        const response = await apiClient.get(GET_USER_INFO, {
-          withCredentials: true,
-        });
-        console.log({ response });
-      } catch (error) {
-        console.log({ error });
-      }
-    }; */
-
-      ///  copilot
-      /*       try {
-        const response = await apiClient.get(GET_USER_INFO, {
-          withCredentials: true,
-        });
-        if (response.data.user) {
-          setUserInfo(response.data.user); // Update userInfo state
-        }
-        setLoading(false);
-      } catch (error) {
-        console.log({ error });
-        setLoading(false);
-      }
-    }; */
-      ///
-
-      // copied
-
       try {
         const response = await apiClient.get(GET_USER_INFO, {
           withCredentials: true,
@@ -72,8 +43,6 @@ const App = () => {
         setLoading(false);
       }
     };
-
-    ///
 
     if (!userInfo) {
       getUserData();

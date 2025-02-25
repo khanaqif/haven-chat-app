@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAppStore } from "@/store";
-import { HOST, LOGOUT_ROUTE } from "@/utils/constants"; //client\src\utils\constants.js
-import { getColor } from "../../../../../../lib/utils"; //client\src\lib\utils.js
+import { HOST, LOGOUT_ROUTE } from "@/utils/constants";
+import { getColor } from "../../../../../../lib/utils";
 import {
   Tooltip,
   TooltipContent,
@@ -17,7 +17,6 @@ const ProfileInfo = () => {
   const { userInfo, setUserInfo } = useAppStore();
   const navigate = useNavigate();
 
-  /* logout function */
   const logOut = async () => {
     try {
       const response = await apiClient.post(
