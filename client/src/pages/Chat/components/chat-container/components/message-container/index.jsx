@@ -2,8 +2,9 @@ import { useAppStore } from "../../../../../../store";
 import moment from "moment";
 import { useEffect, useState, useRef } from "react";
 
-import Message from "../../../../../../../../server/models/MessagesModal";
+/* import Message from "../../../../../../../../server/models/MessagesModal"; */
 
+import Message from "../../../../../../../../models/MessagesModal";
 import { apiClient } from "../../../../../../lib/api-client";
 import {
   FETCH_ALL_MESSAGES_ROUTE,
