@@ -9,7 +9,8 @@ const userSocketMap = new Map();
 const setupSocket = (server) => {
   io = new SocketIOServer(server, {
     cors: {
-      origin: process.env.ORIGIN.split(","),
+      /* origin: process.env.ORIGIN.split(","), */
+      origin: process.env.ORIGIN === "*" ? "*" : process.env.ORIGIN.split(","), // Allow multiple origins
       methods: ["GET", "POST"],
       credentials: true,
     },

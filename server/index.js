@@ -4,6 +4,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import http from "http";
+import path from "path";
 import authRoutes from "./routes/AuthRoutes.js";
 import contactsRoutes from "./routes/ContactRoutes.js";
 import messagesRoutes from "./routes/MessagesRoute.js";
@@ -47,10 +48,18 @@ const connectDB = async () => {
 };
 connectDB();
 
-app.get("/", (req, res) => {
-  res.send("Backend is running!");
+/* serve react frontend */
+
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, "../client/dist")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
 });
 
+/* app.get("/", (req, res) => {
+  res.send("Backend is running!");
+});
+ */
 setupSocket(server);
 
 server.listen(port, () => {
