@@ -10,6 +10,7 @@ import contactsRoutes from "./routes/ContactRoutes.js";
 import messagesRoutes from "./routes/MessagesRoute.js";
 import channelRoutes from "./routes/ChannelRoutes.js";
 import { setupSocket } from "./socket.js";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
@@ -50,7 +51,8 @@ connectDB();
 
 /* serve react frontend */
 
-const __dirname = path.resolve();
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
 app.use(express.static(path.join(__dirname, "../client/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../client/dist", "index.html"));
