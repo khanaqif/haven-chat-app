@@ -2,5 +2,5 @@
 .codegpt
 node_modules/
 uploads/
-dist/
+
 build/
